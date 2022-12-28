@@ -1,11 +1,10 @@
 import { signMessage } from "./utils/EIP191";
 import { signTypedDataV4 } from "./utils/EIP712";
-import types from "./libs/signTypedData";
 
 // for test
 const wallet = {
     address: "0xB984E64a321D837466F2CC48cd0B7F8603e6cF25",
-    privateKey: "55e51eb0338cd822dcd621fc23699df1a6ee637d23e604ceaaf75fe07d4ee595"
+    privateKey: "0x55e51eb0338cd822dcd621fc23699df1a6ee637d23e604ceaaf75fe07d4ee595"
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +18,27 @@ console.log("EIP191 : ", signMessage(message, wallet.privateKey));
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // see `https://eips.ethereum.org/EIPS/eip-712`
+
+const types = {
+    EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+    ],
+    MainType: [
+        { name: "SubTypeAKey", type: "SubTypeA" },
+        { name: "SubTypeBKey", type: "SubTypeB[]" },
+    ],
+    SubTypeA: [
+        { name: "stringKey", type: "string" },
+        { name: "addressKey", type: "address" },
+    ],
+    SubTypeB: [
+        { name: "uint256Key", type: "uint256" },
+        { name: "addressKey", type: "address" },
+    ],
+};
 
 const domain = {
     name: 'Example name',
@@ -45,6 +65,6 @@ const typedData = {
     message: data
 }
 
-console.log("EIP712 : ", signTypedDataV4(typedData, Buffer.from(wallet.privateKey, 'hex')));
+console.log("EIP712 : ", signTypedDataV4(typedData, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
