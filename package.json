@@ -1,0 +1,24 @@
+{
+  "name": "eip191-web3",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx ts-node src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/95decode/EIP191-web3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/95decode/EIP191-web3/issues"
+  },
+  "homepage": "https://github.com/95decode/EIP191-web3#readme",
+  "dependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4",
+    "web3": "^1.8.1"
+  }
+}
