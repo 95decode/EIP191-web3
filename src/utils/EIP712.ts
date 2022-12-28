@@ -15,9 +15,11 @@ import {
  * @param privateKey The private key to sign with.
  * @returns The raw RLP encoded signature.
  */
-export function signTypedDataV4(data: TypedMessage<MessageTypes>, privateKey: Buffer): string {
+export function signTypedDataV4(data: TypedMessage<MessageTypes>, privateKey: string): string {
+    const buf = Buffer.from(privateKey.replace("0x", ""), 'hex');
+
     return signTypedData({
-        privateKey,
+        privateKey: buf,
         data,
         version: SignTypedDataVersion.V4
     });
