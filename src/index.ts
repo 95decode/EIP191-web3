@@ -13,11 +13,47 @@ const wallet = {
 
 const message = "Example message";
 
-console.log("EIP191 : ", signMessage(message, wallet.privateKey));
+console.log("EIP191 signature :", signMessage(message, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // see `https://eips.ethereum.org/EIPS/eip-712`
+
+/*
+
+Typed Data json-schema
+
+{
+    type: 'object',
+    properties: {
+        types: {
+            type: 'object',
+            properties: {
+                EIP712Domain: {type: 'array'},
+            },
+            additionalProperties: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        name: {type: 'string'},
+                        type: {type: 'string'}
+                    },
+                    required: ['name', 'type']
+                }
+            },
+            required: ['EIP712Domain']
+        },
+        primaryType: {type: 'string'},
+        domain: {type: 'object'},
+        message: {type: 'object'}
+    },
+    required: ['types', 'primaryType', 'domain', 'message']
+}
+
+*/
+
+// sample typed data
 
 const types = {
     EIP712Domain: [
@@ -65,6 +101,6 @@ const typedData = {
     message: data
 }
 
-console.log("EIP712 : ", signTypedDataV4(typedData, wallet.privateKey));
+console.log("EIP712 signature :", signTypedDataV4(typedData, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
