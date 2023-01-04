@@ -2,7 +2,6 @@ import Web3 from "web3";
 import secp256k1 from "secp256k1";
 import keccak256 from "keccak256";
 
-
 /**
  * @dev The value passed as the message parameter will be UTF-8 HEX decoded and wrapped as follows:
  * "\x19Ethereum Signed Message:\n" + message.length + message
@@ -18,7 +17,7 @@ export function signMessage(message: string, privateKey: string): string {
 }
 
 /**
- * @dev Return the ethereum signable messages from EIP-191
+ * @dev Return the ethereum signable messages from EIP-191.
  * 
  * see [EIP-191](https://eips.ethereum.org/EIPS/eip-191)
  * 
