@@ -2,7 +2,8 @@ import {
     signTypedData, 
     SignTypedDataVersion, 
     TypedMessage, 
-    MessageTypes 
+    MessageTypes,
+    TypedDataUtils
 } from "@metamask/eth-sig-util";
 
 /**
@@ -23,4 +24,16 @@ export function signTypedDataV4(data: TypedMessage<MessageTypes>, privateKey: st
         data,
         version: SignTypedDataVersion.V4
     });
+}
+
+/**
+ * @dev Return the ethereum signable messages from EIP-191.
+ * 
+ * see [EIP-191](https://eips.ethereum.org/EIPS/eip-191)
+ * 
+ * @param typedData The typed data to sign.
+ * @returns EIP712 hashed data.
+ */
+export function encodeTypedData(typedData: TypedMessage<MessageTypes>): string {
+    return "0x" + TypedDataUtils.eip712Hash(typedData, SignTypedDataVersion.V4).toString("hex");
 }

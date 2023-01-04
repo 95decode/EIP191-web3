@@ -1,5 +1,5 @@
 import { encodeMessage, signMessage, sign } from "./utils/EIP191";
-import { signTypedDataV4 } from "./utils/EIP712";
+import { signTypedDataV4, encodeTypedData } from "./utils/EIP712";
 
 // for test
 const wallet = {
@@ -12,12 +12,13 @@ const wallet = {
 // see `https://eips.ethereum.org/EIPS/eip-191`
 
 const message = "sample message";
+
 const hashedMessage = encodeMessage(message);
 
 console.log("Original message string      :", message);
 console.log("EIP191 encoded message       :", hashedMessage);
 console.log("EIP191 signature(secp256k1)  :", sign(hashedMessage, wallet.privateKey));
-console.log("EIP191 signature( web3.js )  :", signMessage(message, wallet.privateKey));
+console.log("EIP191 signature(web3.js)    :", signMessage(message, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -105,6 +106,11 @@ const typedData = {
     message: data
 }
 
-console.log("EIP712 signature(ethSigUtil) :", signTypedDataV4(typedData, wallet.privateKey));
+const hashedData = encodeTypedData(typedData);
+
+console.log("\nOriginal typed data          :\n", typedData);
+console.log("EIP712 encoded typedData     :", hashedData);
+console.log("EIP191 signature(secp256k1)  :", sign(hashedData, wallet.privateKey))
+console.log("EIP191 signature(ethSigUtil) :", signTypedDataV4(typedData, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
