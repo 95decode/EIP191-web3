@@ -1,5 +1,19 @@
-import { encodeMessage, signMessage, sign } from "./utils/EIP191";
-import { signTypedDataV4, encodeTypedData } from "./utils/EIP712";
+import keccak256 from "keccak256";
+import { 
+    encodeMessage, 
+    signMessage, 
+    sign 
+} from "./utils/EIP191";
+import { 
+    signTypedDataV4, 
+    hashTypedData, 
+    encodeTypeData 
+} from "./utils/EIP712";
+import { 
+    encodeHexString,
+    decodeHexString,
+    stringToHexString
+} from "./utils/rlp";
 
 // for test
 const wallet = {
@@ -15,10 +29,10 @@ const message = "sample message";
 
 const hashedMessage = encodeMessage(message);
 
-console.log("Original message string      :", message);
-console.log("EIP191 encoded message       :", hashedMessage);
-console.log("EIP191 signature(secp256k1)  :", sign(hashedMessage, wallet.privateKey));
-console.log("EIP191 signature(web3.js)    :", signMessage(message, wallet.privateKey));
+//console.log("Original message string           :", message);
+console.log("Hashed EIP191 message             :", hashedMessage);
+console.log("EIP191 signature(secp256k1)       :", sign(hashedMessage, wallet.privateKey));
+console.log("EIP191 signature(web3.js)         :", signMessage(message, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -106,11 +120,23 @@ const typedData = {
     message: data
 }
 
-const hashedData = encodeTypedData(typedData);
+const encoded = encodeTypeData(typedData);
+const hashedData = hashTypedData(typedData);
 
-console.log("\nOriginal typed data          :\n", typedData);
-console.log("EIP712 encoded typedData     :", hashedData);
-console.log("EIP191 signature(secp256k1)  :", sign(hashedData, wallet.privateKey))
-console.log("EIP191 signature(ethSigUtil) :", signTypedDataV4(typedData, wallet.privateKey));
+//console.log("\nOriginal typed data               :\n", typedData);
+console.log(" ");
+console.log("EIP712 hashed typedData(indirect) :", "0x" + keccak256(encoded).toString("hex"));
+console.log("EIP712 hashed typedData(direct)   :", hashedData);
+console.log("EIP191 signature(secp256k1)       :", sign(hashedData, wallet.privateKey))
+console.log("EIP191 signature(ethSigUtil)      :", signTypedDataV4(typedData, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
+
+const hexString = stringToHexString(message);
+const rlpEncoded = encodeHexString(hexString)
+const rlpDecoded = decodeHexString(rlpEncoded)
+
+console.log(" ");
+console.log("original message    :", hexString)
+console.log("RLP encoded message :", rlpEncoded);
+console.log("RLP decoded message :", rlpDecoded);
