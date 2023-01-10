@@ -1,8 +1,10 @@
+//import { ethers } from "ethers";
 import keccak256 from "keccak256";
 import { 
     encodeMessage, 
     signMessage, 
-    sign 
+    sign, 
+    encodeMessageKlaytn
 } from "./utils/EIP191";
 import { 
     signTypedDataV4, 
@@ -25,14 +27,16 @@ const wallet = {
 
 // see `https://eips.ethereum.org/EIPS/eip-191`
 
-const message = "sample message";
+const message = "hello world";
 
 const hashedMessage = encodeMessage(message);
+const klaytnMessage = encodeMessageKlaytn(message);
 
 //console.log("Original message string           :", message);
 console.log("Hashed EIP191 message             :", hashedMessage);
 console.log("EIP191 signature(secp256k1)       :", sign(hashedMessage, wallet.privateKey));
 console.log("EIP191 signature(web3.js)         :", signMessage(message, wallet.privateKey));
+console.log("Klaytn                            :", sign(klaytnMessage, wallet.privateKey));
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -133,10 +137,29 @@ console.log("EIP191 signature(ethSigUtil)      :", signTypedDataV4(typedData, wa
 //////////////////////////////////////////////////////////////////////////////////////////
 
 const hexString = stringToHexString(message);
-const rlpEncoded = encodeHexString(hexString)
-const rlpDecoded = decodeHexString(rlpEncoded)
+const rlpEncoded = encodeHexString(hexString);
+const rlpDecoded = decodeHexString(rlpEncoded);
 
 console.log(" ");
-console.log("original message    :", hexString)
+console.log("original message    :", hexString);
 console.log("RLP encoded message :", rlpEncoded);
 console.log("RLP decoded message :", rlpDecoded);
+
+/*
+
+const unsignedTx = {
+    type: 0,
+    to: "0x00000000879Cd60de9fEaC82452cead7a07E18df",
+    value: 1,
+    gasPrice: 10000000,
+    gasLimit: 21000,
+    nonce: 5,
+    chainId: 5,
+    data: "0x00"
+}
+
+const serializedTx = ethers.utils.serializeTransaction(unsignedTx).slice(2);
+
+console.log(serializedTx);
+
+*/

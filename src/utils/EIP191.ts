@@ -32,6 +32,14 @@ export function encodeMessage(message: string): string {
     ).toString("hex");
 }
 
+export function encodeMessageKlaytn(message: string): string {
+    return "0x" + keccak256(
+        "\x19Klaytn Signed Message:\n"
+        + message.length.toString()
+        + message
+    ).toString("hex");
+}
+
 /**
  * @dev Sign the message using secp256k1
  * 
